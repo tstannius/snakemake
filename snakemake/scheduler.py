@@ -531,6 +531,7 @@ class JobScheduler:
                     # if an error occurs while processing job output,
                     # we do the same as in case of errors during execution
                     print_exception(e, self.workflow.linemaps)
+                    job.log_error() # This just sends an error msg, but no exception
                     self._handle_error(job)
                     return
 
@@ -554,6 +555,7 @@ class JobScheduler:
     def _error_jobs(self):
         # must be called from within lock
         for job in self._toerror:
+            job.log_error() # This just sends an error msg, but no exception
             self._handle_error(job)
         self._toerror.clear()
 
